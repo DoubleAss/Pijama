@@ -1,13 +1,13 @@
-package doubleAss.project_proto;
+package doubleAss.pijama;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Project_protoApplication {
+public class PijamaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Project_protoApplication.class, args);
+		SpringApplication.run(PijamaApplication.class, args);
 	}
 
 }

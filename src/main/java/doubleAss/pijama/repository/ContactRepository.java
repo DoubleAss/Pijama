@@ -1,11 +1,11 @@
-package doubleAss.project_proto.repository;
+package doubleAss.pijama.repository;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import doubleAss.project_proto.entity.Contact;
+import doubleAss.pijama.entity.Contact;
 
 @Repository
 public interface ContactRepository extends CrudRepository<Contact, Integer> {

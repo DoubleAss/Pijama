@@ -1,9 +1,9 @@
-package doubleAss.project_proto.service;
+package doubleAss.pijama.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import doubleAss.project_proto.entity.Contact;
+import doubleAss.pijama.entity.Contact;
 
 public interface ContactService {
     

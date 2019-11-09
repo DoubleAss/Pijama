@@ -1,4 +1,4 @@
-package doubleAss.project_proto.service;
+package doubleAss.pijama.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import doubleAss.project_proto.entity.Contact;
-import doubleAss.project_proto.repository.ContactRepository;
+import doubleAss.pijama.entity.Contact;
+import doubleAss.pijama.repository.ContactRepository;
 
 @Service
 public class ContactServiceImpl implements ContactService {

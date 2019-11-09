@@ -1,10 +1,10 @@
-package doubleAss.project_proto;
+package doubleAss.pijama;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Project_protoApplicationTests {
+class PijamaApplicationTests {
 
 	@Test
 	void contextLoads() {

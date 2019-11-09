@@ -1,4 +1,4 @@
-package doubleAss.project_proto.config;
+package doubleAss.pijama.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
