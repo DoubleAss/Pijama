@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import doubleAss.pijama.entity.Contact;
@@ -16,13 +18,13 @@ public class ContactServiceImpl implements ContactService {
     private ContactRepository contactRepository;
 
     @Override
-    public Iterable<Contact> findAll() {
-        return contactRepository.findAll();
+    public Page<Contact> findAll(Pageable pageable) {
+        return contactRepository.findAll(pageable);
     }
 
     @Override
-    public List<Contact> search(String term) {
-        return contactRepository.findByNameContaining(term);
+    public List<Contact> search(String term, Pageable pageable) {
+        return contactRepository.findByNameContaining(term, pageable);
     }
 
     @Override
