@@ -9,12 +9,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import doubleAss.pijama.common.entity.CreateUpdateDate;
 import lombok.Data;
 
 @Entity
 @Table(name = "contact")
 @Data
-public class Contact {
+public class Contact extends CreateUpdateDate{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

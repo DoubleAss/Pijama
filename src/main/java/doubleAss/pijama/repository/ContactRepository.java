@@ -12,5 +12,8 @@ import doubleAss.pijama.entity.Contact;
 public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
     List<Contact> findByNameContaining(String term, Pageable pageable);
-
+    
+    long countByNameContaining(String term);
+    
+    long count();
 }

@@ -15,7 +15,11 @@ public interface ContactService {
     List<Contact> search(String term, Pageable pageable);
 
     Optional<Contact> findOne(Integer id);
-
+    
+    long countByNameContaining(String term);
+    
+    long count();
+    
     void save(Contact contact);
 
     void delete(Integer id);

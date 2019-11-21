@@ -4,12 +4,11 @@
 
 <body>
     <nav th:replace="layout :: header"></nav>
-
     <div class="container" id="main-content">
         <div class="row">
             <div class="col-6 no-padding">
                 <form class="form-inline" action="#" th:action="@{/contact/search}" method="get">
-                    <input class="form-control mr-sm-2" type="search" name="term" placeholder="Search by name ..." />
+                    <input class="form-control mr-sm-2" type="search" name="term" th:value="${term}" placeholder="Search by name ..." />
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-search"></i> Search
                     </button>
@@ -45,6 +44,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Create date</th>
+                            <th>Update date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -54,6 +55,8 @@
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>
                             <td th:text="${contact.phone}"></td>
+                            <td th:text="${contact.createDate}"></td>
+                            <td th:text="${contact.updateDate}"></td>
                             <td>
                                 <a href="#" th:href="@{/contact/{id}/edit(id=${contact.id})}" class="mr-sm-2 text-primary">
                                     <i class="fa fa-pencil"></i>
@@ -66,9 +69,21 @@
                         </tbody>
                     </table>
                     <ul class="pagination">
-                        <li><a href="#" th:href="@{/contact?page=0}">1</a></li>
-                        <li><a href="#" th:href="@{/contact?page=1}">2</a></li>
-                        <li><a href="#" th:href="@{/contact?page=2}">3</a></li>
+                    	
+                    	<li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${firstPage}}">|<<-</a></li>
+                    	
+                    	<li style="padding: 3px;"><a href="#" th:href="@{${pagePre != 0} ? ${url} + 'page=' + ${pagePre} : ''}">|<-</a></li>
+                    	
+                    	<!-- list Page -->
+                        <li th:each="page : ${listPage}" style="padding: 3px;">
+                        	<a href="#" th:href="@{${url} + 'page=' + ${page}}">
+                        		| <span th:text="${page}"></span> |
+                        	</a>
+                        </li>
+                        
+                        <li style="padding: 3px;"><a href="#" th:href="@{${pageNext != 0} ? ${url} + 'page=' + ${pageNext} : ''}">->|</a></li>
+                        
+                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${lastPage}}">->>|</a></li>
                     </ul>
                 </div>
             </th:block>
