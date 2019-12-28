@@ -1,5 +1,9 @@
 package doubleAss.pijama.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import doubleAss.pijama.common.util.Pagination;
@@ -40,7 +45,7 @@ public class ContactController {
             @RequestParam(name = "size", required = false, defaultValue = "1") Integer size,
             @RequestParam(name = "totalPageResult", required = false, defaultValue = "5") Integer totalPageResult,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort) {
-        
+
         Sort sortable = null;
         if (sort.equals("DESC")) {
             sortable = Sort.by("id").descending();
@@ -114,15 +119,53 @@ public class ContactController {
     }
 
     @PostMapping("/contact/save")
-    public String save(@Valid Contact contact, BindingResult result, RedirectAttributes redirect) {
+    public String save(@Valid Contact contact, BindingResult result, RedirectAttributes redirect,
+            @RequestParam("fileData") MultipartFile file) {
         if (result.hasErrors()) {
             return "form";
         }
+        
+        try {
+            String UPLOADED_FOLDER = "D://";
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         contactService.save(contact);
         redirect.addFlashAttribute("successMessage", "Saved contact successfully!");
         return "redirect:/contact";
     }
 
+//    @PostMapping("/upload_image")
+//    @ResponseBody
+//    public Map<String, String> uploadImage(
+//            @RequestParam("file") MultipartFile file){
+//        Map<String, String> responseData = new HashMap<>();
+//
+//        try {
+//            String UPLOADED_FOLDER = "D:\\Tools\\WorkSpace\\Pijama\\src\\main\\resources\\static\\files\\";
+//            // Get the file and save it somewhere
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        
+//        String linkName = "http://localhost:8080/files/" + file.getOriginalFilename();
+//        responseData.put("link", linkName);
+//        // Send response data.
+//        return responseData;
+//    }
+    
     @GetMapping("/contact/{id}/edit")
     public String edit(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("contact", contactService.findOne(id));
