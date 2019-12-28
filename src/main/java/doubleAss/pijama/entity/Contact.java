@@ -32,4 +32,7 @@ public class Contact {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "file")
+    private String file;
+
 }
