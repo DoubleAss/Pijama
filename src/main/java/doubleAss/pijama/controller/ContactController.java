@@ -5,8 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -26,10 +25,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import doubleAss.pijama.common.util.Pagination;
 import doubleAss.pijama.entity.Contact;
 import doubleAss.pijama.service.ContactService;
 import doubleAss.pijama.utils.WebUtils;
@@ -39,11 +38,12 @@ public class ContactController {
 
     @Autowired
     private ContactService contactService;
-
+    
     @GetMapping({"/contact", "/contact123"})
     public String list(Model model,
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "size", required = false, defaultValue = "1") Integer size,
+            @RequestParam(name = "totalPageResult", required = false, defaultValue = "5") Integer totalPageResult,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort) {
 
         Sort sortable = null;
@@ -53,16 +53,32 @@ public class ContactController {
             sortable = Sort.by("id").ascending();
         }
         
-        Pageable pageable = PageRequest.of(page, size, sortable);
+        long totalItems = contactService.count();
         
+        Pagination pagination = new Pagination();
+        
+        List<Integer> listPage = pagination.listPage(page, totalItems, size, totalPageResult);
+        
+        Pageable pageable = PageRequest.of((page-1), size, sortable);
+        String url = "/contact?";
+        
+        //set attribute
         model.addAttribute("contacts", contactService.findAll(pageable));
+        model.addAttribute("firstPage", pagination.getFirstPage());
+        model.addAttribute("lastPage", pagination.getLastPage());
+        model.addAttribute("pageNext", pagination.getPageNext());
+        model.addAttribute("pagePre", pagination.getPagePre());
+        model.addAttribute("listPage", listPage);
+       
+        model.addAttribute("url", url);
         return "list";
     }
 
     @GetMapping("/contact/search")
-    public String search(@RequestParam("term") String term,
-            @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
+    public String search(@RequestParam("term") String term, 
+            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "totalPageResult", required = false, defaultValue = "5") Integer totalPageResult,
+            @RequestParam(name = "size", required = false, defaultValue = "1") Integer size,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
             Model model) {
         if (StringUtils.isEmpty(term)) {
@@ -76,9 +92,23 @@ public class ContactController {
             sortable = Sort.by("id").ascending();
         }
         
-        Pageable pageable = PageRequest.of(page, size, sortable);
-
+        long totalItems = contactService.countByNameContaining(term);
+        Pagination pagination = new Pagination();
+        List<Integer> listPage = pagination.listPage(page, totalItems, size, totalPageResult);
+        
+        Pageable pageable = PageRequest.of((page-1), size, sortable);
+        String url = "/contact/search?term=" + term + "&";
+        
         model.addAttribute("contacts", contactService.search(term, pageable));
+        
+        model.addAttribute("firstPage", pagination.getFirstPage());
+        model.addAttribute("lastPage", pagination.getLastPage());
+        model.addAttribute("pageNext", pagination.getPageNext());
+        model.addAttribute("pagePre", pagination.getPagePre());
+        model.addAttribute("listPage", listPage);
+        
+        model.addAttribute("term", term);
+        model.addAttribute("url", url);
         return "list";
     }
 
