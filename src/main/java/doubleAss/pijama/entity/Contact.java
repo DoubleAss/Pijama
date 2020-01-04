@@ -33,7 +33,4 @@ public class Contact extends CreateUpdateDate{
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "file")
-    private String file;
-
 }
