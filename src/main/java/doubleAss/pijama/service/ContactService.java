@@ -25,4 +25,6 @@ public interface ContactService {
     void delete(Integer id);
     
     List<Contact> searchAllProperties(String term, Pageable pageable);
+    
+    boolean isUpdatedStatusContact(int id, int status);
 }

@@ -88,5 +88,21 @@ public class ContactServiceImpl implements ContactService {
         }
         return listContact;
     }
+
+    @Override
+    public boolean isUpdatedStatusContact(int id, int status) {
+        
+        String sql = ContactSql.UPDATE_STATUS_CONTACT;
+        List<Contact> listContact = new ArrayList<>();
+        try {
+            Query query = entityManager.createNativeQuery(sql, Contact.class);
+            query.setParameter("", "%" + status + "%");
+            query.setParameter("id", "%" + id + "%");
+            listContact = (List<Contact>) query.getResultList();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
    
 }
