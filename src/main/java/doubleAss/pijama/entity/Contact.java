@@ -35,7 +35,4 @@ public class Contact extends SystemDate{
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "file")
-    private String file;
-
 }

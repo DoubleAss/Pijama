@@ -16,11 +16,13 @@ public interface ContactService {
 
     Optional<Contact> findOne(Integer id);
     
-    long countByNameContaining(String term);
+    long countBySearch(String term);
     
     long count();
     
     void save(Contact contact);
 
     void delete(Integer id);
+    
+    List<Contact> searchAllProperties(String term, Pageable pageable);
 }

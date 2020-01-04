@@ -68,23 +68,29 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Phan trang -->
                     <ul class="pagination">
-                    	
-                    	<li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${firstPage}}">|<<-</a></li>
-                    	
-                    	<li style="padding: 3px;"><a href="#" th:href="@{${pagePre != 0} ? ${url} + 'page=' + ${pagePre} : ''}">|<-</a></li>
-                    	
-                    	<!-- list Page -->
-                        <li th:each="page : ${listPage}" style="padding: 3px;">
-                        	<a href="#" th:href="@{${url} + 'page=' + ${page}}">
-                        		| <span th:text="${page}"></span> |
-                        	</a>
+                        
+                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + ${pagination.firstPage}}">|<<-</a></li>
+                        
+                        <li style="padding: 3px;">
+                            <a href="#" th:href="@{${pagination.pagePre != 0} ? ${url} + ${pagination.pagePre} : 'javascript:void(0)'}">|<-</a>
                         </li>
                         
-                        <li style="padding: 3px;"><a href="#" th:href="@{${pageNext != 0} ? ${url} + 'page=' + ${pageNext} : ''}">->|</a></li>
+                        <!-- list Page -->
+                        <li th:each="page : ${#numbers.sequence( pagination.begin, pagination.end)}" style="padding: 3px;">
+                            <a href="#" th:href="@{${url} + ${page}}">
+                                | <span th:text="${page}"></span> |
+                            </a>
+                        </li>
                         
-                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${lastPage}}">->>|</a></li>
+                        <li style="padding: 3px;">
+                            <a href="#" th:href="@{${pagination.pageNext != 0} ? ${url} + ${pagination.pageNext} : 'javascript:void(0)'}">->|</a>
+                        </li>
+                        
+                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + ${pagination.lastPage}}">->>|</a></li>
                     </ul>
+                    <!-- Phan trang -->
                 </div>
             </th:block>
         </div>
