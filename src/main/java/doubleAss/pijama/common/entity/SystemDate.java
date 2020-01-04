@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public class CreateUpdateDate {
+public class SystemDate {
     
     @Column(name="create_date")
     String createDate;
