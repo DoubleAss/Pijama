@@ -1,4 +1,4 @@
-package doubleAss.pijama.utils;
+package doubleAss.pijama.common.util;
 
 import java.util.Collection;
 
