@@ -1,9 +1,5 @@
 package doubleAss.pijama.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -119,18 +115,18 @@ public class ContactController {
             return "form";
         }
         
-        try {
-            String UPLOADED_FOLDER = "D://";
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String UPLOADED_FOLDER = "D://";
+//            // Get the file and save it somewhere
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+//
+//            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         
         contactService.save(contact);
         redirect.addFlashAttribute("successMessage", "Saved contact successfully!");
