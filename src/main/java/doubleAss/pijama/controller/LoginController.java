@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import doubleAss.pijama.utils.WebUtils;
+import doubleAss.pijama.common.util.WebUtils;
 
 public class LoginController {
 
