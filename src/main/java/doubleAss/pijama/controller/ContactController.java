@@ -1,6 +1,9 @@
 package doubleAss.pijama.controller;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.validation.Valid;
 
@@ -35,7 +38,7 @@ public class ContactController {
             @RequestParam(name = "size", required = false, defaultValue = "1") Integer size,
             @RequestParam(name = "totalPageResult", required = false, defaultValue = "5") Integer totalPageResult,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort) {
-
+        
         Sort sortable = null;
         if (sort.equals("DESC")) {
             sortable = Sort.by("id").descending();
@@ -45,22 +48,18 @@ public class ContactController {
         
         long totalItems = contactService.count();
         
-        Pagination pagination = new Pagination();
-        
-        List<Integer> listPage = pagination.listPage(page, totalItems, size, totalPageResult);
+        // Setup phan trang
+        Pagination pagination = new Pagination(page, totalItems, size, totalPageResult);
         
         Pageable pageable = PageRequest.of((page-1), size, sortable);
-        String url = "/contact?";
+        
+        String url = "/contact?page=";
         
         //set attribute
         model.addAttribute("contacts", contactService.findAll(pageable));
-        model.addAttribute("firstPage", pagination.getFirstPage());
-        model.addAttribute("lastPage", pagination.getLastPage());
-        model.addAttribute("pageNext", pagination.getPageNext());
-        model.addAttribute("pagePre", pagination.getPagePre());
-        model.addAttribute("listPage", listPage);
-       
+        model.addAttribute("pagination", pagination);
         model.addAttribute("url", url);
+        
         return "list";
     }
 
@@ -82,23 +81,19 @@ public class ContactController {
             sortable = Sort.by("id").ascending();
         }
         
-        long totalItems = contactService.countByNameContaining(term);
-        Pagination pagination = new Pagination();
-        List<Integer> listPage = pagination.listPage(page, totalItems, size, totalPageResult);
+        long totalItems = contactService.countBySearch(term);
+        
+        //Setup Phan trang
+        Pagination pagination = new Pagination(page, totalItems, size, totalPageResult);
         
         Pageable pageable = PageRequest.of((page-1), size, sortable);
-        String url = "/contact/search?term=" + term + "&";
+        String url = "/contact/search?term=" + term + "&page=";
         
-        model.addAttribute("contacts", contactService.search(term, pageable));
-        
-        model.addAttribute("firstPage", pagination.getFirstPage());
-        model.addAttribute("lastPage", pagination.getLastPage());
-        model.addAttribute("pageNext", pagination.getPageNext());
-        model.addAttribute("pagePre", pagination.getPagePre());
-        model.addAttribute("listPage", listPage);
-        
+        model.addAttribute("contacts", contactService.searchAllProperties(term, pageable));
+        model.addAttribute("pagination", pagination);
         model.addAttribute("term", term);
         model.addAttribute("url", url);
+        
         return "list";
     }
 
@@ -115,18 +110,18 @@ public class ContactController {
             return "form";
         }
         
-//        try {
-//            String UPLOADED_FOLDER = "D://";
-//            // Get the file and save it somewhere
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-//            Files.write(path, bytes);
-//
-//            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            String UPLOADED_FOLDER = "D://";
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         contactService.save(contact);
         redirect.addFlashAttribute("successMessage", "Saved contact successfully!");
