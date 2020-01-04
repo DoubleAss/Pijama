@@ -34,7 +34,7 @@ public class FileController {
     /**
      * Froala Editor 이미지 업로드
      */
-    @PostMapping("/image")
+    @PostMapping("/files")
     @ResponseBody
     public Map<String, String> imageUpload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 
@@ -46,7 +46,7 @@ public class FileController {
             // {"link" : "/image/201905/e98ff4f7-93a3-4aeb-813b-12f20a03db96.jpg"}
             return ImmutableMap.of(
                         "link",
-                        String.format("%s/image/%s", request.getContextPath(), result.getPath()));
+                        String.format("%s/%s", request.getRequestURL(), result.getPath()));
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -58,7 +58,7 @@ public class FileController {
     /**
      * 이미지 다운로드 (ex) /image/201905/e98ff4f7-93a3-4aeb-813b-12f20a03db96.jpg
      */
-    @GetMapping("/image/{path}/{id}")
+    @GetMapping("/files/{path}/{id}")
     public void image(HttpServletResponse response, @PathVariable String path, @PathVariable String id) {
         try {
             servcie.to(path, id, response.getOutputStream());
