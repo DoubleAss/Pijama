@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import doubleAss.pijama.common.util.DatetimeUtil;
 import doubleAss.pijama.common.util.Pagination;
 import doubleAss.pijama.entity.Contact;
 import doubleAss.pijama.service.ContactService;
@@ -54,9 +55,15 @@ public class ContactController {
         Pageable pageable = PageRequest.of((page-1), size, sortable);
         
         String url = "/contact?page=";
+
+        var contactList = contactService.findAll(pageable);
+        contactList.forEach(c -> {
+            c.setCreateDate(DatetimeUtil.displaySystemDate(c.getCreateDate()));
+            c.setUpdateDate(DatetimeUtil.displaySystemDate(c.getUpdateDate()));
+        });
         
         //set attribute
-        model.addAttribute("contacts", contactService.findAll(pageable));
+        model.addAttribute("contacts", contactList);
         model.addAttribute("pagination", pagination);
         model.addAttribute("url", url);
         
@@ -88,8 +95,14 @@ public class ContactController {
         
         Pageable pageable = PageRequest.of((page-1), size, sortable);
         String url = "/contact/search?term=" + term + "&page=";
-        
-        model.addAttribute("contacts", contactService.searchAllProperties(term, pageable));
+
+        var contactList = contactService.searchAllProperties(term, pageable);
+        contactList.forEach(c -> {
+            c.setCreateDate(DatetimeUtil.displaySystemDate(c.getCreateDate()));
+            c.setUpdateDate(DatetimeUtil.displaySystemDate(c.getUpdateDate()));
+        });
+
+        model.addAttribute("contacts", contactList);
         model.addAttribute("pagination", pagination);
         model.addAttribute("term", term);
         model.addAttribute("url", url);

@@ -1,4 +1,4 @@
-package doubleAss.pijama.utils;
+package doubleAss.pijama.common.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
