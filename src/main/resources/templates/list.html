@@ -40,6 +40,7 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
+                            <th>Status</th>
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
@@ -51,6 +52,14 @@
                         </thead>
                         <tbody>
                         <tr th:each="contact,iterStat : ${contacts}">
+                            <td th:id="'ketqua-' + ${contact.id}" >
+                                <a href="javascript:void(0)" th:switch="${contact.status}"
+                                    th:onclick="'getStatusForContact(' + ${contact.id} + ',' + ${contact.status} + ')'">
+                                    <img th:case="0" alt="" th:src="'../../images/deactive.gif'">
+                                    <img th:case="1" alt="" th:src="'../../images/active.gif'">
+                                     
+                                </a>
+                            </td>
                             <th scope="row" th:text="${iterStat.count}"></th>
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>

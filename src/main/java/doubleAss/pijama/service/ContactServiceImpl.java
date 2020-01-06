@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,6 +88,22 @@ public class ContactServiceImpl implements ContactService {
             e.printStackTrace();
         }
         return listContact;
+    }
+
+    @Override
+    @Transactional
+    public int isUpdatedStatusContact(int id, int status) {
+        
+        String sql = ContactSql.UPDATE_STATUS_CONTACT;
+        try {
+            Query query = entityManager.createNativeQuery(sql, Contact.class);
+            query.setParameter("status", status);
+            query.setParameter("id", id);
+            return query.executeUpdate();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
    
 }

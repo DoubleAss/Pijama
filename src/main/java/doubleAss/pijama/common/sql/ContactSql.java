@@ -8,4 +8,8 @@ public class ContactSql {
     
     public static final String COUNT_BY_NAME_EMAIL = "SELECT COUNT(1) "
             + "FROM CONTACT WHERE name LIKE :term OR email LIKE :term";
+    
+    public static final String UPDATE_STATUS_CONTACT = "UPDATE contact "
+            + "SET status = :status "
+            + "WHERE id = :id";
 }
