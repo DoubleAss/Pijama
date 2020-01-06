@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,19 +91,19 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean isUpdatedStatusContact(int id, int status) {
+    @Transactional
+    public int isUpdatedStatusContact(int id, int status) {
         
         String sql = ContactSql.UPDATE_STATUS_CONTACT;
-        List<Contact> listContact = new ArrayList<>();
         try {
             Query query = entityManager.createNativeQuery(sql, Contact.class);
-            query.setParameter("", "%" + status + "%");
-            query.setParameter("id", "%" + id + "%");
-            listContact = (List<Contact>) query.getResultList();
+            query.setParameter("status", status);
+            query.setParameter("id", id);
+            return query.executeUpdate();
         }catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
    
 }

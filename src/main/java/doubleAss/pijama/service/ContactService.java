@@ -26,5 +26,5 @@ public interface ContactService {
     
     List<Contact> searchAllProperties(String term, Pageable pageable);
     
-    boolean isUpdatedStatusContact(int id, int status);
+    int isUpdatedStatusContact(int id, int status);
 }
