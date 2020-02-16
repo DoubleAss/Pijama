@@ -38,4 +38,7 @@ public class Contact extends SystemDate{
     @Column(name = "status")
     private int status;
 
+    @Column(name = "content")
+    private String content;
+
 }

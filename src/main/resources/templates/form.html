@@ -8,7 +8,7 @@
     <div class="container" id="main-content">
         <div class="row d-flex justify-content-center">
             <form style="min-width: 300px;" action="#" th:action="@{/contact/save}"
-            th:object="${contact}" method="post" novalidate="novalidate" enctype="multipart/form-data">
+            th:object="${contact}" method="post" novalidate="novalidate" enctype="multipart/form-data" id="form">
 			    <h5 class="text-center">Contact form</h5>
 			
 			    <input type="hidden" th:field="*{id}" />
@@ -37,7 +37,8 @@
                 
                 <div class="form-group">
 	                <div id="editor">
-	                    <div id='edit' style="margin-top: 30px;"></div>
+	                    <div id='edit' style="margin-top: 30px;" th:utext="${contact.get().content}"></div>
+	                    <input type="hidden" id="content" th:field="*{content}" />
 	                </div>
 			     </div>
 			     
@@ -53,8 +54,7 @@
     <footer th:replace="layout :: footer"></footer>
     <script>
     (function () {
-
-      new FroalaEditor("#edit", {
+      var editor = new FroalaEditor("#edit", {
         imageEditButtons: ['imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove', 'imageDisplay'],
         imageUploadURL: '/files',
         imageUploadParam: 'file',
@@ -63,6 +63,12 @@
         imageMaxSize: 2 * 1024 * 1024,
         imageDefaultDisplay: 'inline',
         imageDefaultAlign: 'left'
+      });
+
+      $("#form").on("submit", function() {
+          //var html = editor.html.set(editor.html.get());
+          alert(editor.html.get());
+          $("#content").val(editor.html.get());
       })
     })()
   </script>
