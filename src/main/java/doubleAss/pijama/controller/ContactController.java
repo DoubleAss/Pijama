@@ -33,6 +33,8 @@ import doubleAss.pijama.service.ContactService;
 @Controller
 public class ContactController {
 
+    private static final String REGEX_REPLACE_URL = "#\\w+";
+
     @Autowired
     private ContactService contactService;
     
@@ -64,7 +66,7 @@ public class ContactController {
             c.setCreateDate(DatetimeUtil.displaySystemDate(c.getCreateDate()));
             c.setUpdateDate(DatetimeUtil.displaySystemDate(c.getUpdateDate()));
         });
-        
+
         //set attribute
         model.addAttribute("contacts", contactList);
         model.addAttribute("pagination", pagination);
@@ -116,6 +118,7 @@ public class ContactController {
     @GetMapping("/contact/add")
     public String add(Model model) {
         model.addAttribute("contact", new Contact());
+        model.addAttribute("flgNew", true);
         return "form";
     }
 
@@ -132,25 +135,16 @@ public class ContactController {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
-
-            System.out.println("You successfully uploaded '" + file.getOriginalFilename() + "'");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String regex = "#\\w+";
-        String link = "<a href=\"" + request.getRequestURL() + "/search?term=%s\" target=\"_blank\" >%s</a>";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(contact.getContent());
-        while (matcher.find())
-        {
-            System.out.println("nhatnm11" + matcher.group());
+
+        String link = "<a href='" + request.getRequestURL() + "/search?term=%s' target='_blank'>%s</a>";
+        Matcher matcher = Pattern.compile(REGEX_REPLACE_URL).matcher(contact.getContent());
+        while (matcher.find()) {
             contact.setContent(contact.getContent().replace(
                     matcher.group(0), String.format(link, matcher.group().replace("#", ""), matcher.group())));
-            System.out.println("nhatnm12" + contact.getContent());
-//            System.out.println("nhatnm11" + matcher.group(2));
         }
-//        contact.setContent(Pattern.compile(regex).matcher(contact.getContent()).replaceAll("abc"));
 
         contactService.save(contact);
         redirect.addFlashAttribute("successMessage", "Saved contact successfully!");

@@ -24,10 +24,10 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private ContactRepository contactRepository;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
     public Page<Contact> findAll(Pageable pageable) {
         return contactRepository.findAll(pageable);
@@ -52,12 +52,12 @@ public class ContactServiceImpl implements ContactService {
     public void delete(Integer id) {
         contactRepository.deleteById(id);
     }
-    
+
     @Override
     public long count() {
         return contactRepository.count();
     }
-    
+
     @Override
     public long countBySearch(String term) {
         String sql = ContactSql.COUNT_BY_NAME_EMAIL;
@@ -66,12 +66,12 @@ public class ContactServiceImpl implements ContactService {
             Query query = entityManager.createNativeQuery(sql);
             query.setParameter("term", "%" + term + "%");
             count = (BigInteger) query.getResultList().get(0);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return count.longValue();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Contact> searchAllProperties(String term, Pageable pageable) {
@@ -84,7 +84,7 @@ public class ContactServiceImpl implements ContactService {
             query.setParameter("offset", pageable.getOffset());
             query.setParameter("size", pageable.getPageSize());
             listContact = (List<Contact>) query.getResultList();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return listContact;
@@ -93,17 +93,17 @@ public class ContactServiceImpl implements ContactService {
     @Override
     @Transactional
     public int isUpdatedStatusContact(int id, int status) {
-        
+
         String sql = ContactSql.UPDATE_STATUS_CONTACT;
         try {
             Query query = entityManager.createNativeQuery(sql, Contact.class);
             query.setParameter("status", status);
             query.setParameter("id", id);
             return query.executeUpdate();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
-   
+
 }
