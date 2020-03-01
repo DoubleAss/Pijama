@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +121,7 @@ public class ContactController {
 
     @PostMapping("/contact/save")
     public String save(@Valid Contact contact, BindingResult result, RedirectAttributes redirect,
-            @RequestParam("fileData") MultipartFile file) {
+            @RequestParam("fileData") MultipartFile file, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "form";
         }
@@ -135,7 +138,20 @@ public class ContactController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+        String regex = "#\\w+";
+        String link = "<a href=\"" + request.getRequestURL() + "/search?term=%s\" target=\"_blank\" >%s</a>";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(contact.getContent());
+        while (matcher.find())
+        {
+            System.out.println("nhatnm11" + matcher.group());
+            contact.setContent(contact.getContent().replace(
+                    matcher.group(0), String.format(link, matcher.group().replace("#", ""), matcher.group())));
+            System.out.println("nhatnm12" + contact.getContent());
+//            System.out.println("nhatnm11" + matcher.group(2));
+        }
+//        contact.setContent(Pattern.compile(regex).matcher(contact.getContent()).replaceAll("abc"));
+
         contactService.save(contact);
         redirect.addFlashAttribute("successMessage", "Saved contact successfully!");
         return "redirect:/contact";
