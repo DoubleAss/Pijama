@@ -23,12 +23,6 @@
         </div>
         
         <div class="row mt-4">
-            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <span th:text="${successMessage}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             
             <th:block th:if="${#lists.isEmpty(contacts)}">
                 <h5>No contacts</h5>
@@ -40,32 +34,19 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th>Status</th>
                             <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Create date</th>
-                            <th>Update date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="contact,iterStat : ${contacts}">
-                            <td th:id="'ketqua-' + ${contact.id}" >
-                                <a href="javascript:void(0)" th:switch="${contact.status}"
-                                    th:onclick="'getStatusForContact(' + ${contact.id} + ',' + ${contact.status} + ')'">
-                                    <img th:case="0" alt="" th:src="'../../images/deactive.gif'">
-                                    <img th:case="1" alt="" th:src="'../../images/active.gif'">
-                                     
-                                </a>
-                            </td>
                             <th scope="row" th:text="${iterStat.count}"></th>
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>
                             <td th:text="${contact.phone}"></td>
-                            <td th:text="${contact.createDate}"></td>
-                            <td th:text="${contact.updateDate}"></td>
                             <td>
                                 <a href="#" th:href="@{/contact/{id}/edit(id=${contact.id})}" class="mr-sm-2 text-primary">
                                     <i class="fa fa-pencil"></i>
@@ -79,25 +60,6 @@
                     </table>
                     <!-- Phan trang -->
                     <ul class="pagination">
-                        
-                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + ${pagination.firstPage}}">|<<-</a></li>
-                        
-                        <li style="padding: 3px;">
-                            <a href="#" th:href="@{${pagination.pagePre != 0} ? ${url} + ${pagination.pagePre} : 'javascript:void(0)'}">|<-</a>
-                        </li>
-                        
-                        <!-- list Page -->
-                        <li th:each="page : ${#numbers.sequence( pagination.begin, pagination.end)}" style="padding: 3px;">
-                            <a href="#" th:href="@{${url} + ${page}}">
-                                | <span th:text="${page}"></span> |
-                            </a>
-                        </li>
-                        
-                        <li style="padding: 3px;">
-                            <a href="#" th:href="@{${pagination.pageNext != 0} ? ${url} + ${pagination.pageNext} : 'javascript:void(0)'}">->|</a>
-                        </li>
-                        
-                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + ${pagination.lastPage}}">->>|</a></li>
                     </ul>
                     <!-- Phan trang -->
                 </div>

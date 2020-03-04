@@ -1,31 +1,32 @@
 package doubleAss.pijama.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import doubleAss.pijama.common.entity.SystemDate;
+import org.seasar.doma.Column;
+import org.seasar.doma.Entity;
+import org.seasar.doma.GeneratedValue;
+import org.seasar.doma.GenerationType;
+import org.seasar.doma.Id;
+import org.seasar.doma.Table;
+
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "contact")
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class Contact extends SystemDate{
+@Table(name = "contact")
+public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "status")
+    private Integer status;
+    
     @NotEmpty
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Email
@@ -35,10 +36,6 @@ public class Contact extends SystemDate{
     @Column(name = "phone")
     private String phone;
     
-    @Column(name = "status")
-    private int status;
-
-    @Column(name = "content")
-    private String content;
+    
 
 }
