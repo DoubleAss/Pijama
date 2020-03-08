@@ -1,4 +1,4 @@
 select
-    id, name, email, phone
+    id, status, name, email, phone
 from
     contact

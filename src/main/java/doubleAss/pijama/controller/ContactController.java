@@ -15,9 +15,9 @@ public class ContactController {
     
     @GetMapping({"/contact", "/"})
     public String list(Model model) {
-        
+        var contacts = contactService.selectAll();
         //set attribute
-        model.addAttribute("contacts", contactService.selectAll());
+        model.addAttribute("contacts", contacts);
         
         return "list";
     }

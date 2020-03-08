@@ -35,6 +35,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Status</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -44,6 +45,7 @@
                         <tbody>
                         <tr th:each="contact,iterStat : ${contacts}">
                             <th scope="row" th:text="${iterStat.count}"></th>
+                            <td th:text="${contact.status}"></td>
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>
                             <td th:text="${contact.phone}"></td>
