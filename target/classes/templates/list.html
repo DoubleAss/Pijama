@@ -23,12 +23,6 @@
         </div>
         
         <div class="row mt-4">
-            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <span th:text="${successMessage}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             
             <th:block th:if="${#lists.isEmpty(contacts)}">
                 <h5>No contacts</h5>
@@ -41,17 +35,19 @@
                         <thead>
                         <tr>
                             <th>#</th>
+                            <th>Status</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Create date</th>
-                            <th>Update date</th>
+                            <th>Create Date</th>
+                            <th>Update Date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="contact,iterStat : ${contacts}">
                             <th scope="row" th:text="${iterStat.count}"></th>
+                            <td th:text="${contact.status}"></td>
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>
                             <td th:text="${contact.phone}"></td>
@@ -68,23 +64,10 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Phan trang -->
                     <ul class="pagination">
-                    	
-                    	<li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${firstPage}}">|<<-</a></li>
-                    	
-                    	<li style="padding: 3px;"><a href="#" th:href="@{${pagePre != 0} ? ${url} + 'page=' + ${pagePre} : ''}">|<-</a></li>
-                    	
-                    	<!-- list Page -->
-                        <li th:each="page : ${listPage}" style="padding: 3px;">
-                        	<a href="#" th:href="@{${url} + 'page=' + ${page}}">
-                        		| <span th:text="${page}"></span> |
-                        	</a>
-                        </li>
-                        
-                        <li style="padding: 3px;"><a href="#" th:href="@{${pageNext != 0} ? ${url} + 'page=' + ${pageNext} : ''}">->|</a></li>
-                        
-                        <li style="padding: 3px;"><a href="#" th:href="@{${url} + 'page=' + ${lastPage}}">->>|</a></li>
                     </ul>
+                    <!-- Phan trang -->
                 </div>
             </th:block>
         </div>

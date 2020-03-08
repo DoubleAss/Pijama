@@ -39,6 +39,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Create Date</th>
+                            <th>Update Date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -49,6 +51,8 @@
                             <td th:text="${contact.name}"></td>
                             <td th:text="${contact.email}"></td>
                             <td th:text="${contact.phone}"></td>
+                            <td th:text="${contact.createDate}"></td>
+                            <td th:text="${contact.updateDate}"></td>
                             <td>
                                 <a href="#" th:href="@{/contact/{id}/edit(id=${contact.id})}" class="mr-sm-2 text-primary">
                                     <i class="fa fa-pencil"></i>

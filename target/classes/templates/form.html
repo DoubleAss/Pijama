@@ -8,10 +8,11 @@
     <div class="container" id="main-content">
         <div class="row d-flex justify-content-center">
             <form style="min-width: 300px;" action="#" th:action="@{/contact/save}"
-            th:object="${contact}" method="post" novalidate="novalidate" enctype="multipart/form-data">
+            th:object="${contact}" method="post" novalidate="novalidate" enctype="multipart/form-data" id="form">
 			    <h5 class="text-center">Contact form</h5>
 			
 			    <input type="hidden" th:field="*{id}" />
+			    <input type="hidden" th:field="*{createDate}" />
 			
 			    <div class="form-group">
 			        <input class="form-control" type="text" placeholder="Contact name"
@@ -29,17 +30,7 @@
 			        <input class="form-control" type="text" placeholder="Contact phone"
 			               th:field="*{phone}" />
 			    </div>
-			    
-			    <div class="form-group">
-                    <input class="form-control" type="file" name="fileData" multiple="multiple"/>
-                </div>
-                
-                <div class="form-group">
-	                <div id="editor">
-	                    <div id='edit' style="margin-top: 30px;"></div>
-	                </div>
-			     </div>
-			     
+
 			    <div class="form-group">
 			        <button type="submit" class="btn btn-block btn-primary">
 			            <i class="fa fa-save"></i> Save
@@ -50,20 +41,6 @@
     </div><!-- /.container -->
 
     <footer th:replace="layout :: footer"></footer>
-    <script>
-    (function () {
 
-      new FroalaEditor("#edit", {
-        imageEditButtons: ['imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove', 'imageDisplay'],
-        imageUploadURL: '/image',
-        imageUploadParam: 'file',
-        imageUploadMethod: 'POST',
-        imageAllowedTypes: ['jpeg', 'jpg', 'png'],
-        imageMaxSize: 2 * 1024 * 1024,
-        imageDefaultDisplay: 'inline',
-        imageDefaultAlign: 'left'
-      })
-    })()
-  </script>
 </body>
 </html>
